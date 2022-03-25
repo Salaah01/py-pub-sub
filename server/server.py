@@ -28,16 +28,15 @@ class Server:
 
         print(f"[LISTENING] Server is listening on {config.SERVER}")
 
-        client, addr = self.server.accept()
-        with client:
+        while True:
+            client, addr = self.server.accept()
             print(f"[CONNECTED] {addr} connected")
             state.Client.add_client(client)
 
-            thread = threading.Thread(
+            threading.Thread(
                 target=client_msg_process,
                 args=(client, addr),
-            )
-            thread.start()
+            ).start()
 
 
 if __name__ == "__main__":

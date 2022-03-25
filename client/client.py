@@ -23,8 +23,8 @@ class Client:
 
     def send_message(self, msg: str) -> None:
         """Sends a message to the server."""
-        message = msg.encode('utf-8')
-        self.client.send(f"{len(message):<{config.HEADER}}".encode('utf-8'))
+        message = msg.encode("utf-8")
+        self.client.send(f"{len(message):<{config.HEADER}}".encode("utf-8"))
         self.client.send(message)
 
     def receive_message(self) -> str:
@@ -53,22 +53,18 @@ class Client:
         are received are passed to the callback function.
         """
         while True:
-            msg_len = int(self.client.recv(config.HEADER).decode('utf-8'))
+            msg_len = int(self.client.recv(config.HEADER).decode("utf-8"))
             if not msg_len:
                 continue
             func(self.client.recv(int(msg_len)).decode())
 
 
 if __name__ == "__main__":
-    # with Client() as client:
-        # client.connect()
-        # client.subscribe("test")
-        # client.publish_message("test", f"Hello from {client.client.getsockname()}")
-        # client.listen(print)
-        # print(1111111111111)
-    client = Client()
-    client.connect()
-    client.subscribe("test")
-    while True:
-        pass
-    print('11111111111111')
+    with Client() as client:
+        client.connect()
+        client.subscribe("test")
+        client.publish_message(
+            "test",
+            f"Hello from {client.client.getsockname()}",
+        )
+        client.listen(print)

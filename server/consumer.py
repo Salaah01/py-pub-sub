@@ -18,7 +18,6 @@ def client_msg_process(client: socket.socket, addr: str) -> None:
             continue
 
         msg_length = int(msg_length)
-        print(f"\033[92mmesg_length: {msg_length}\033[0m")
         msg = client.recv(msg_length).decode('utf-8')
 
         for handler in handler_map:
