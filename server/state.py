@@ -2,7 +2,7 @@ import typing as _t
 import socket
 
 _clients: _t.Dict[str, _t.Set[str]] = {}
-_subscriptions:  _t.Dict[str, _t.Set[socket.socket]] = {}
+_subscriptions: _t.Dict[str, _t.Set[socket.socket]] = {}
 
 
 class Client:
@@ -41,8 +41,9 @@ class Subscription:
 
     def __len__(self):
         """Returns the number of all subscriptions."""
-        return sum(len(subscriptions) for subscriptions
-                   in self.subscriptions.values())
+        return sum(
+            len(subscriptions) for subscriptions in self.subscriptions.values()
+        )
 
     @classmethod
     def add_subscription(cls, client: socket.socket, channel: str) -> None:
