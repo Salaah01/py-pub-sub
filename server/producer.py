@@ -1,8 +1,13 @@
 """Handles outgoing messages to the client."""
 
 import socket
-import state
-from config_loader import config
+
+try:
+    import state
+    from config_loader import config
+except ImportError:
+    from . import state
+    from .config_loader import config
 
 
 def publish(client: socket.socket, channel: str, msg: str) -> None:

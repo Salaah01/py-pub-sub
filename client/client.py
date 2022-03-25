@@ -13,8 +13,8 @@ class Client:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        # self.disconnect()
-        # self.client.close()
+        self.disconnect()
+        self.client.close()
         print("[CLOSED] Client is closed")
 
     def connect(self):

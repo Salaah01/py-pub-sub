@@ -1,9 +1,14 @@
 import socket
 import threading
-import state
-from consumer import client_msg_process
-from config_loader import config
 
+try:
+    import state
+    from consumer import client_msg_process
+    from config_loader import config
+except ImportError:
+    from . import state
+    from .consumer import client_msg_process
+    from .config_loader import config
 
 _server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -39,8 +44,10 @@ class Server:
             ).start()
 
 
+def main():
+    with Server() as server:
+        server.run()
+
+
 if __name__ == "__main__":
-    # with Server() as server:
-    # server.run()
-    server = Server()
-    server.run()
+    main()

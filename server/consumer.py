@@ -2,9 +2,15 @@
 
 import socket
 from abc import ABC, abstractmethod
-from config_loader import config
-import state
-import producer
+
+try:
+    from config_loader import config
+    import state
+    import producer
+except ImportError:
+    from .config_loader import config
+    from . import state
+    from . import producer
 
 
 def client_msg_process(client: socket.socket, addr: str) -> None:
@@ -13,12 +19,12 @@ def client_msg_process(client: socket.socket, addr: str) -> None:
     """
     connected = True
     while connected:
-        msg_length = client.recv(config.HEADER).decode('utf-8')
+        msg_length = client.recv(config.HEADER).decode("utf-8")
         if not msg_length:
             continue
 
         msg_length = int(msg_length)
-        msg = client.recv(msg_length).decode('utf-8')
+        msg = client.recv(msg_length).decode("utf-8")
 
         for handler in handler_map:
             if msg.startswith(handler):
