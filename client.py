@@ -20,10 +20,9 @@ def send(msg):
     send_length += b' ' * (HEADER - len(send_length))
     client.send(send_length)
     client.send(message)
-    print(client.recv(2048).decode(UTF8))
+    # print(client.recv(2048).decode(UTF8))
 
-send('DISCONNECT Hello 1')
-send('DISCONNECT Hello 2')
-send('DISCONNECT Hello 3')
 
-send(DISCONNECT_MESSAGE)
+# send('DISCONNECT Hello 1')
+send('SUBSCRIBE Hello')
+send('UNSUBSCRIBE Hello')
