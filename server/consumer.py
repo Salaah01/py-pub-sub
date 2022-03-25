@@ -4,6 +4,7 @@ import socket
 from abc import ABC, abstractmethod
 import constants
 import state
+import producer
 
 
 def client_msg_process(client: socket.socket, addr: str) -> None:
@@ -84,8 +85,29 @@ class UnsubscribeHandler(HandlerBase):
         )
 
 
+class PublishHandler(HandlerBase):
+    """Handles publishing a message to all clients subscribed to a channel."""
+
+    def handle(self):
+        msg_components = self.msg.split(' ')
+        try:
+            channel = msg_components[1]
+            msg = ' '.join(msg_components[2:])
+
+        except IndexError:
+            print(f"[ERROR] Invalid message: {self.msg}")
+            return
+
+        producer.publish(client=self.client, channel=channel, msg=msg)
+        print(
+            f"[PUBLISHED] {self.client.getpeername()} published to {channel}: "
+            f"{msg}"
+        )
+
+
 handler_map = {
     'DISCONNECT': DisconnectHandler,
     'SUBSCRIBE': SubscribeHandler,
-    'UNSUBSCRIBE': UnsubscribeHandler
+    'UNSUBSCRIBE': UnsubscribeHandler,
+    'PUBLISH': PublishHandler
 }

@@ -15,14 +15,21 @@ client.connect(ADDR)
 
 def send(msg):
     message = msg.encode(UTF8)
-    msg_length = len(message)
-    send_length = str(msg_length).encode(UTF8)
-    send_length += b' ' * (HEADER - len(send_length))
-    client.send(send_length)
+    client.send(f'{len(message):<{HEADER}}'.encode(UTF8))
     client.send(message)
-    # print(client.recv(2048).decode(UTF8))
+
+
+def listen():
+    while True:
+        msg_length = client.recv(HEADER).decode(UTF8)
+        if not msg_length:
+            continue
+        msg_length = int(msg_length)
+        msg = client.recv(msg_length).decode(UTF8)
+        print(msg)
 
 
 # send('DISCONNECT Hello 1')
 send('SUBSCRIBE Hello')
-send('UNSUBSCRIBE Hello')
+send('PUBLISH Hello Hello world 2')
+listen()

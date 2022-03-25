@@ -2,8 +2,8 @@ import typing as _t
 import socket
 import threading
 import constants
-from incoming import client_msg_process
 import state
+from consumer import client_msg_process
 
 _server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 _subscriptions: _t.Dict[str, _t.Set[socket.socket]] = {}
@@ -33,7 +33,6 @@ class Server:
                 args=(client, addr)
             )
             thread.start()
-
 
 if __name__ == '__main__':
     server = Server()
